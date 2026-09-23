@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large datasets
+data/raw/
+data/*.csv
+data/*.npy
+
+# Trained models
+models/*.pth
+models/*.pkl
+
+# Temporary files
+*.log
+*.tmp
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
