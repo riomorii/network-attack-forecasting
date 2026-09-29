@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Network Attack Forecasting</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">N</div>
+
+            <div>
+                <h2>NetForecast</h2>
+                <span>AI Security Platform</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <p class="nav-title">MAIN</p>
+
+            <a href="index.html" class="nav-item active">
+                <span>◈</span>
+                Dashboard
+            </a>
+
+            <a href="dataset.html" class="nav-item">
+                <span>▣</span>
+                Dataset
+            </a>
+
+            <a href="training.html" class="nav-item">
+                <span>◉</span>
+                Model Training
+            </a>
+
+            <p class="nav-title">ANALYSIS</p>
+
+            <a href="forecast.html" class="nav-item">
+                <span>◇</span>
+                Forecast
+            </a>
+
+            <a href="history.html" class="nav-item">
+                <span>▤</span>
+                Prediction History
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="model-status">
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Ready</strong>
+                    <small>Model connected</small>
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>Network traffic intelligence and attack forecasting</p>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="system-indicator">
+                    <span></span>
+                    Online
+                </div>
+
+                <div class="profile">
+                    <div class="avatar">AI</div>
+
+                    <div>
+                        <strong>Security Model</strong>
+                        <small>Forecast Engine</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- INTRO -->
+            <div class="page-intro">
+
+                <div>
+                    <h2>Network Attack Forecasting</h2>
+
+                    <p>
+                        Predict upcoming network states and potential attacks
+                        using historical traffic patterns.
+                    </p>
+                </div>
+
+                <a href="forecast.html" class="primary-button">
+                    Run Forecast
+                </a>
+
+            </div>
+
+
+            <!-- STAT CARDS -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+                        <span>Dataset Records</span>
+                        <div class="stat-icon">▣</div>
+                    </div>
+
+                    <h3>125,430</h3>
+
+                    <p class="positive">
+                        ↑ 8.4% processed
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+                        <span>Model Accuracy</span>
+                        <div class="stat-icon">◎</div>
+                    </div>
+
+                    <h3>94.2%</h3>
+
+                    <p class="positive">
+                        ↑ 2.1% from previous model
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+                        <span>Features</span>
+                        <div class="stat-icon">◇</div>
+                    </div>
+
+                    <h3>15</h3>
+
+                    <p>
+                        Traffic features
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+                        <span>Model Status</span>
+                        <div class="stat-icon success">✓</div>
+                    </div>
+
+                    <h3 class="status-text">Ready</h3>
+
+                    <p>
+                        Last trained today
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHART + FORECAST -->
+            <div class="dashboard-grid">
+
+                <!-- TRAFFIC -->
+                <div class="panel traffic-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Network Traffic</h3>
+                            <p>Recent traffic state distribution</p>
+                        </div>
+
+                        <select id="trafficRange">
+                            <option>Last 24 Hours</option>
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                        </select>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <!-- FORECAST -->
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Latest Forecast</h3>
+                            <p>AI prediction</p>
+                        </div>
+
+                        <span class="badge low">
+                            LOW RISK
+                        </span>
+
+                    </div>
+
+
+                    <div class="forecast-result">
+
+                        <div class="forecast-icon">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <span>Predicted Next State</span>
+
+                            <h2>Suspicious</h2>
+
+                            <p>
+                                Probability: <strong>12.4%</strong>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="forecast-details">
+
+                        <div>
+                            <span>Attack Type</span>
+                            <strong>None detected</strong>
+                        </div>
+
+                        <div>
+                            <span>Confidence</span>
+                            <strong>87.6%</strong>
+                        </div>
+
+                        <div>
+                            <span>Prediction Window</span>
+                            <strong>Next State</strong>
+                        </div>
+
+                    </div>
+
+
+                    <a href="forecast.html" class="secondary-button">
+                        View Forecast
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOWER SECTION -->
+            <div class="dashboard-grid bottom-grid">
+
+                <!-- MODEL PIPELINE -->
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Model Pipeline</h3>
+                            <p>Current training pipeline</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline">
+
+                        <div class="pipeline-step completed">
+
+                            <div class="pipeline-circle">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>Dataset</strong>
+                                <span>Loaded</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="pipeline-line"></div>
+
+
+                        <div class="pipeline-step completed">
+
+                            <div class="pipeline-circle">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>Preprocessing</strong>
+                                <span>Completed</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="pipeline-line"></div>
+
+
+                        <div class="pipeline-step completed">
+
+                            <div class="pipeline-circle">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>Training</strong>
+                                <span>Completed</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="pipeline-line"></div>
+
+
+                        <div class="pipeline-step current">
+
+                            <div class="pipeline-circle">
+                                →
+                            </div>
+
+                            <div>
+                                <strong>Forecast</strong>
+                                <span>Ready</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATTACK DISTRIBUTION -->
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Attack Distribution</h3>
+                            <p>Dataset classification</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="attack-list">
+
+                        <div class="attack-row">
+
+                            <div class="attack-name">
+                                <span class="dot normal"></span>
+                                Normal
+                            </div>
+
+                            <strong>68%</strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <span style="width:68%"></span>
+                        </div>
+
+
+                        <div class="attack-row">
+
+                            <div class="attack-name">
+                                <span class="dot warning"></span>
+                                DoS
+                            </div>
+
+                            <strong>14%</strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <span style="width:14%"></span>
+                        </div>
+
+
+                        <div class="attack-row">
+
+                            <div class="attack-name">
+                                <span class="dot danger"></span>
+                                Probe
+                            </div>
+
+                            <strong>10%</strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <span style="width:10%"></span>
+                        </div>
+
+
+                        <div class="attack-row">
+
+                            <div class="attack-name">
+                                <span class="dot purple"></span>
+                                Other
+                            </div>
+
+                            <strong>8%</strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <span style="width:8%"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>

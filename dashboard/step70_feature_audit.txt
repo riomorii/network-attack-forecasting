@@ -1,0 +1,517 @@
+STEP 70: FEATURE SOURCE AUDIT
+============================================================
+
+FILE: src\analyze_world_model_errors.py
+037: # ============================================================
+038: 
+039: feature_names = [
+040:     "Destination Port",
+041:     "Flow Duration",
+042:     "Total Fwd Packets",
+043:     "Total Backward Packets",
+---
+160: for rank, feature_index in enumerate(ranking):
+161: 
+162:     name = feature_names[feature_index]
+163: 
+164:     mean_error = mean_feature_error[feature_index]
+165: 
+166:     max_error = max_feature_error[feature_index]
+---
+
+FILE: src\audit_dataset_quality.py
+015: STATE_FILE = os.path.join(
+016:     DATA_DIR,
+017:     "multiclass_network_states.npy"
+018: )
+019: 
+020: STATE_LABEL_FILE = os.path.join(
+021:     DATA_DIR,
+---
+085: # ============================================================
+086: 
+087: FEATURE_NAMES = [
+088:     "Avg Flow Packets/s",
+089:     "Std Flow Packets/s",
+090:     "Avg Flow Bytes/s",
+091:     "Std Flow Bytes/s",
+---
+480: 
+481: for i, feature_name in enumerate(
+482:     FEATURE_NAMES
+483: ):
+484: 
+485:     column = states_float[
+486:         :,
+---
+573: 
+574:     print(
+575:         f"{FEATURE_NAMES[i]:34s}: "
+576:         f"{negative_count:,} negative values"
+577:     )
+578: 
+579: 
+---
+581: 
+582:         warn_check(
+583:             f"{FEATURE_NAMES[i]} contains negative values."
+584:         )
+585: 
+586:     else:
+587: 
+---
+587: 
+588:         pass_check(
+589:             f"{FEATURE_NAMES[i]} has no negative values."
+590:         )
+591: 
+592: 
+593: # ============================================================
+---
+
+FILE: src\create_multiclass_network_states.py
+627: 
+628: np.save(
+629:     "data/multiclass_network_states.npy",
+630:     states
+631: )
+632: 
+633: np.save(
+---
+647: 
+648: print(
+649:     "data/multiclass_network_states.npy"
+650: )
+651: 
+652: print(
+653:     "data/multiclass_state_labels.npy"
+---
+
+FILE: src\create_multiclass_sequences.py
+007: # ============================================
+008: 
+009: STATE_FILE = Path("data/multiclass_network_states.npy")
+010: LABEL_FILE = Path("data/multiclass_state_labels.npy")
+011: META_FILE = Path("data/multiclass_state_metadata.csv")
+012: 
+013: WINDOW_SIZE = 5
+---
+
+FILE: src\create_network_states.py
+195: 
+196: np.save(
+197:     "data/network_states_train.npy",
+198:     states
+199: )
+200: 
+201: 
+---
+216: print()
+217: print("Saved:")
+218: print("data/network_states_train.npy")
+219: 
+220: 
+221: # ============================================================
+222: # 11. FEATURE NAMES
+---
+
+FILE: src\create_state_sequences.py
+017: 
+018: # Load scaled network states
+019: train = np.load("data/network_states_train_scaled.npy")
+020: val = np.load("data/network_states_val_scaled.npy")
+021: test = np.load("data/network_states_test_scaled.npy")
+022: 
+023: print("Original shapes:")
+---
+018: # Load scaled network states
+019: train = np.load("data/network_states_train_scaled.npy")
+020: val = np.load("data/network_states_val_scaled.npy")
+021: test = np.load("data/network_states_test_scaled.npy")
+022: 
+023: print("Original shapes:")
+024: print("Train:", train.shape)
+---
+019: train = np.load("data/network_states_train_scaled.npy")
+020: val = np.load("data/network_states_val_scaled.npy")
+021: test = np.load("data/network_states_test_scaled.npy")
+022: 
+023: print("Original shapes:")
+024: print("Train:", train.shape)
+025: print("Validation:", val.shape)
+---
+
+FILE: src\evaluate_correct_onset.py
+021: 
+022: states = np.load(
+023:     "data/multiclass_network_states.npy"
+024: )
+025: 
+026: labels = np.load(
+027:     "data/multiclass_state_labels.npy",
+---
+
+FILE: src\evaluate_multitask_rollout.py
+137: )
+138: 
+139: network_states = np.load(
+140:     "data/multiclass_network_states.npy"
+141: )
+142: 
+143: state_labels_raw = np.load(
+---
+138: 
+139: network_states = np.load(
+140:     "data/multiclass_network_states.npy"
+141: )
+142: 
+143: state_labels_raw = np.load(
+144:     "data/multiclass_state_labels.npy",
+---
+164: print(
+165:     "Network states:",
+166:     network_states.shape
+167: )
+168: 
+169: print(
+170:     "State labels:",
+---
+177: # ============================================================
+178: 
+179: if len(network_states) != len(state_labels_raw):
+180: 
+181:     raise ValueError(
+182:         "Network states and state labels have different lengths."
+183:     )
+---
+183:     )
+184: 
+185: if len(network_states) != len(metadata):
+186: 
+187:     raise ValueError(
+188:         "Network states and metadata have different lengths."
+189:     )
+---
+330:     )[0]
+331: 
+332:     states = network_states[
+333:         indices
+334:     ]
+335: 
+336:     labels = state_labels[
+---
+
+FILE: src\explain_and_simulate.py
+058: ]
+059: 
+060: FEATURE_NAMES = [
+061:     "Avg Flow Packets/s",
+062:     "Std Flow Packets/s",
+063:     "Avg Flow Bytes/s",
+064:     "Std Flow Bytes/s",
+---
+302: 
+303:         for j, feature in enumerate(
+304:             FEATURE_NAMES
+305:         ):
+306: 
+307:             value = raw_sequence[
+308:                 t,
+---
+588: 
+589: for feature_idx, feature_name in enumerate(
+590:     FEATURE_NAMES
+591: ):
+592: 
+593:     modified_scaled = scale_sequence(
+594:         raw_sequence,
+---
+
+FILE: src\inspect_network_states.py
+006: # ============================================================
+007: 
+008: states = np.load("data/network_states_train.npy")
+009: 
+010: print("Network state shape:", states.shape)
+011: 
+012: 
+---
+015: # ============================================================
+016: 
+017: feature_names = [
+018:     "Average packets/sec",
+019:     "Packet-rate variability",
+020:     "Average bytes/sec",
+021:     "Byte-rate variability",
+---
+043: print("=" * 75)
+044: 
+045: for i, name in enumerate(feature_names):
+046: 
+047:     values = states[:, i]
+048: 
+049:     print()
+---
+079: print("=" * 75)
+080: 
+081: for i, name in enumerate(feature_names):
+082: 
+083:     values = states[:, i]
+084: 
+085:     q99 = np.percentile(values, 99)
+---
+
+FILE: src\inspect_state_features.py
+002: 
+003: 
+004: feature_names = [
+005:     "Destination Port",
+006:     "Flow Duration",
+007:     "Total Fwd Packets",
+008:     "Total Backward Packets",
+---
+053: print("=" * 80)
+054: 
+055: for i, name in enumerate(feature_names):
+056: 
+057:     values = X_flat[:, i]
+058: 
+059:     print()
+---
+
+FILE: src\predict_world_model.py
+034: ]
+035: 
+036: FEATURE_NAMES = [
+037:     "Avg Flow Packets/s",
+038:     "Std Flow Packets/s",
+039:     "Avg Flow Bytes/s",
+040:     "Std Flow Bytes/s",
+---
+153: 
+154: def scale_input(
+155:     network_states,
+156:     scaler
+157: ):
+158:     """
+159:     Convert raw 5 x 15 network states into
+---
+162: 
+163:     array = np.asarray(
+164:         network_states,
+165:         dtype=np.float32
+166:     )
+167: 
+168: 
+---
+205:     model,
+206:     scaler,
+207:     network_states
+208: ):
+209:     """
+210:     Predict the next network state and attack class.
+211: 
+---
+212:     Parameters
+213:     ----------
+214:     network_states : array-like, shape (5, 15)
+215:         Five historical network states.
+216: 
+217:     Returns
+218:     -------
+---
+226: 
+227:     scaled_input = scale_input(
+228:         network_states,
+229:         scaler
+230:     )
+231: 
+232: 
+---
+307:     model,
+308:     scaler,
+309:     network_states,
+310:     steps=5
+311: ):
+312:     """
+313:     Perform autoregressive forecasting.
+---
+318:     Parameters
+319:     ----------
+320:     network_states : array-like, shape (5, 15)
+321:         Initial historical states.
+322: 
+323:     steps : int
+324:         Number of future states to predict.
+---
+345: 
+346:     current_states = np.asarray(
+347:         network_states,
+348:         dtype=np.float32
+349:     ).copy()
+350: 
+351: 
+---
+
+FILE: src\scale_network_states.py
+003: import joblib
+004: 
+005: train = np.load("data/network_states_train_split.npy")
+006: val = np.load("data/network_states_val.npy")
+007: test = np.load("data/network_states_test.npy")
+008: 
+009: print("Training shape  :", train.shape)
+---
+004: 
+005: train = np.load("data/network_states_train_split.npy")
+006: val = np.load("data/network_states_val.npy")
+007: test = np.load("data/network_states_test.npy")
+008: 
+009: print("Training shape  :", train.shape)
+010: print("Validation shape:", val.shape)
+---
+005: train = np.load("data/network_states_train_split.npy")
+006: val = np.load("data/network_states_val.npy")
+007: test = np.load("data/network_states_test.npy")
+008: 
+009: print("Training shape  :", train.shape)
+010: print("Validation shape:", val.shape)
+011: print("Test shape      :", test.shape)
+---
+026: # Save scaled datasets
+027: np.save(
+028:     "data/network_states_train_scaled.npy",
+029:     train_scaled.astype(np.float32)
+030: )
+031: 
+032: np.save(
+---
+031: 
+032: np.save(
+033:     "data/network_states_val_scaled.npy",
+034:     val_scaled.astype(np.float32)
+035: )
+036: 
+037: np.save(
+---
+036: 
+037: np.save(
+038:     "data/network_states_test_scaled.npy",
+039:     test_scaled.astype(np.float32)
+040: )
+041: 
+042: # Save scaler for later inference
+---
+066: print()
+067: print("Saved:")
+068: print("data/network_states_train_scaled.npy")
+069: print("data/network_states_val_scaled.npy")
+070: print("data/network_states_test_scaled.npy")
+071: print("models/network_state_scaler.pkl")
+---
+067: print("Saved:")
+068: print("data/network_states_train_scaled.npy")
+069: print("data/network_states_val_scaled.npy")
+070: print("data/network_states_test_scaled.npy")
+071: print("models/network_state_scaler.pkl")
+---
+068: print("data/network_states_train_scaled.npy")
+069: print("data/network_states_val_scaled.npy")
+070: print("data/network_states_test_scaled.npy")
+071: print("models/network_state_scaler.pkl")
+---
+
+FILE: src\split_network_states.py
+006: # ============================================================
+007: 
+008: states = np.load("data/network_states_train.npy")
+009: 
+010: print("Total network states:", len(states))
+011: print("State shape:", states.shape)
+012: 
+---
+030: # ============================================================
+031: 
+032: np.save("data/network_states_train_split.npy", train)
+033: np.save("data/network_states_val.npy", val)
+034: np.save("data/network_states_test.npy", test)
+035: 
+036: 
+---
+031: 
+032: np.save("data/network_states_train_split.npy", train)
+033: np.save("data/network_states_val.npy", val)
+034: np.save("data/network_states_test.npy", test)
+035: 
+036: 
+037: # ============================================================
+---
+032: np.save("data/network_states_train_split.npy", train)
+033: np.save("data/network_states_val.npy", val)
+034: np.save("data/network_states_test.npy", test)
+035: 
+036: 
+037: # ============================================================
+038: # RESULTS
+---
+051: print()
+052: print("Saved:")
+053: print("data/network_states_train_split.npy")
+054: print("data/network_states_val.npy")
+055: print("data/network_states_test.npy")
+---
+052: print("Saved:")
+053: print("data/network_states_train_split.npy")
+054: print("data/network_states_val.npy")
+055: print("data/network_states_test.npy")
+---
+053: print("data/network_states_train_split.npy")
+054: print("data/network_states_val.npy")
+055: print("data/network_states_test.npy")
+---
+
+FILE: src\train_attack_risk_model.py
+015: # --------------------------------------------------
+016: 
+017: TRAIN_X = "data/network_states_train_scaled.npy"
+018: VAL_X = "data/network_states_val_scaled.npy"
+019: TEST_X = "data/network_states_test_scaled.npy"
+020: 
+021: LABELS = "data/network_state_labels.npy"
+---
+016: 
+017: TRAIN_X = "data/network_states_train_scaled.npy"
+018: VAL_X = "data/network_states_val_scaled.npy"
+019: TEST_X = "data/network_states_test_scaled.npy"
+020: 
+021: LABELS = "data/network_state_labels.npy"
+022: 
+---
+017: TRAIN_X = "data/network_states_train_scaled.npy"
+018: VAL_X = "data/network_states_val_scaled.npy"
+019: TEST_X = "data/network_states_test_scaled.npy"
+020: 
+021: LABELS = "data/network_state_labels.npy"
+022: 
+023: # --------------------------------------------------
+---
+
+FILE: src\train_multitask_world_model.py
+151: # Load original multiclass states and metadata
+152: states = np.load(
+153:     "data/multiclass_network_states.npy"
+154: )
+155: 
+156: metadata = __import__("pandas").read_csv(
+157:     "data/multiclass_state_metadata.csv"
+---
+
+FILE: src\train_onset_forecaster.py
+022: 
+023: states = np.load(
+024:     "data/multiclass_network_states.npy"
+025: )
+026: 
+027: labels = np.load(
+028:     "data/multiclass_state_labels.npy",
+---

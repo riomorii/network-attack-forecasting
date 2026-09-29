@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Forecast | NetForecast</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">N</div>
+
+        <div>
+
+            <h2>NetForecast</h2>
+
+            <span>AI Security Platform</span>
+
+        </div>
+
+    </div>
+
+
+    <nav class="navigation">
+
+        <p class="nav-title">MAIN</p>
+
+        <a href="index.html" class="nav-item">
+            <span>◈</span>
+            Dashboard
+        </a>
+
+        <a href="dataset.html" class="nav-item">
+            <span>▣</span>
+            Dataset
+        </a>
+
+        <a href="training.html" class="nav-item">
+            <span>◉</span>
+            Model Training
+        </a>
+
+
+        <p class="nav-title">ANALYSIS</p>
+
+        <a href="forecast.html" class="nav-item active">
+            <span>◇</span>
+            Forecast
+        </a>
+
+        <a href="history.html" class="nav-item">
+            <span>▤</span>
+            Prediction History
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div>
+
+        <h1>Attack Forecast</h1>
+
+        <p>
+            Predict the next network state from traffic data
+        </p>
+
+    </div>
+
+</header>
+
+
+<section class="content">
+
+
+<div class="page-intro">
+
+    <div>
+
+        <h2>AI Forecast Engine</h2>
+
+        <p>
+            The model analyzes recent network states to forecast
+            the next state and potential attack.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>Recent Network States</h3>
+
+            <p>
+                Previous five observations
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="attack-list">
+
+
+        <div class="attack-row">
+
+            <span>State 01</span>
+
+            <strong>Normal</strong>
+
+        </div>
+
+
+        <div class="attack-row">
+
+            <span>State 02</span>
+
+            <strong>Normal</strong>
+
+        </div>
+
+
+        <div class="attack-row">
+
+            <span>State 03</span>
+
+            <strong>Suspicious</strong>
+
+        </div>
+
+
+        <div class="attack-row">
+
+            <span>State 04</span>
+
+            <strong>Normal</strong>
+
+        </div>
+
+
+        <div class="attack-row">
+
+            <span>State 05</span>
+
+            <strong>Suspicious</strong>
+
+        </div>
+
+
+    </div>
+
+
+    <button
+        class="primary-button"
+        style="
+        border:0;
+        width:100%;
+        margin-top:25px;
+        "
+        onclick="runForecast()"
+    >
+
+        Generate Forecast
+
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>Prediction</h3>
+
+            <p>
+                Forecast result
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="forecastResult"
+        style="
+        text-align:center;
+        padding:35px 10px;
+        "
+    >
+
+        <div
+            style="
+            width:55px;
+            height:55px;
+            background:#eff6ff;
+            color:#2563eb;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:auto;
+            font-size:22px;
+            "
+        >
+
+            AI
+
+        </div>
+
+
+        <h2
+            style="
+            margin-top:15px;
+            font-size:20px;
+            "
+        >
+
+            Awaiting Forecast
+
+        </h2>
+
+
+        <p
+            style="
+            color:#64748b;
+            font-size:11px;
+            margin-top:6px;
+            "
+        >
+
+            Run the model to generate the next prediction.
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="panel">
+
+
+<div class="panel-header">
+
+    <div>
+
+        <h3>Forecast Output</h3>
+
+        <p>
+            AI-generated prediction details
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="stats-grid">
+
+
+<div class="stat-card">
+
+    <span
+        style="
+        color:#64748b;
+        font-size:11px;
+        "
+    >
+        Next Network State
+    </span>
+
+    <h3 id="nextState">
+        —
+    </h3>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span
+        style="
+        color:#64748b;
+        font-size:11px;
+        "
+    >
+        Attack Probability
+    </span>
+
+    <h3 id="attackProbability">
+        —
+    </h3>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span
+        style="
+        color:#64748b;
+        font-size:11px;
+        "
+    >
+        Attack Class
+    </span>
+
+    <h3 id="attackClass">
+        —
+    </h3>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span
+        style="
+        color:#64748b;
+        font-size:11px;
+        "
+    >
+        Confidence
+    </span>
+
+    <h3 id="confidence">
+        —
+    </h3>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+
+<script>
+
+function runForecast() {
+
+    document.getElementById("nextState")
+        .textContent = "Suspicious";
+
+    document.getElementById("attackProbability")
+        .textContent = "12.4%";
+
+    document.getElementById("attackClass")
+        .textContent = "DoS";
+
+    document.getElementById("confidence")
+        .textContent = "87.6%";
+
+
+    document.getElementById("forecastResult")
+        .innerHTML = `
+
+        <div
+            style="
+            width:55px;
+            height:55px;
+            background:#fef3c7;
+            color:#d97706;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:auto;
+            font-size:22px;
+            "
+        >
+            !
+        </div>
+
+        <h2
+            style="
+            margin-top:15px;
+            font-size:20px;
+            "
+        >
+            Suspicious
+        </h2>
+
+        <p
+            style="
+            color:#64748b;
+            font-size:11px;
+            margin-top:6px;
+            "
+        >
+            Potential abnormal network activity detected.
+        </p>
+
+        `;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

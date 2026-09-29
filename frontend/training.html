@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Model Training | NetForecast</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">N</div>
+
+        <div>
+            <h2>NetForecast</h2>
+            <span>AI Security Platform</span>
+        </div>
+
+    </div>
+
+
+    <nav class="navigation">
+
+        <p class="nav-title">MAIN</p>
+
+        <a href="index.html" class="nav-item">
+            <span>◈</span>
+            Dashboard
+        </a>
+
+        <a href="dataset.html" class="nav-item">
+            <span>▣</span>
+            Dataset
+        </a>
+
+        <a href="training.html" class="nav-item active">
+            <span>◉</span>
+            Model Training
+        </a>
+
+        <p class="nav-title">ANALYSIS</p>
+
+        <a href="forecast.html" class="nav-item">
+            <span>◇</span>
+            Forecast
+        </a>
+
+        <a href="history.html" class="nav-item">
+            <span>▤</span>
+            Prediction History
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div>
+
+        <h1>Model Training</h1>
+
+        <p>
+            Configure and train the forecasting model
+        </p>
+
+    </div>
+
+</header>
+
+
+<section class="content">
+
+
+<div class="page-intro">
+
+    <div>
+
+        <h2>Training Configuration</h2>
+
+        <p>
+            Configure the model before starting training.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>Model Settings</h3>
+
+            <p>
+                Training parameters
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <label
+        style="
+        display:block;
+        font-size:11px;
+        margin-bottom:7px;
+        "
+    >
+        Model Type
+    </label>
+
+
+    <select
+        style="
+        width:100%;
+        padding:10px;
+        border:1px solid #e2e8f0;
+        border-radius:6px;
+        margin-bottom:18px;
+        "
+    >
+
+        <option>Random Forest</option>
+
+        <option>XGBoost</option>
+
+        <option>Neural Network</option>
+
+        <option>LSTM</option>
+
+    </select>
+
+
+    <label
+        style="
+        display:block;
+        font-size:11px;
+        margin-bottom:7px;
+        "
+    >
+        Training Split
+    </label>
+
+
+    <select
+        style="
+        width:100%;
+        padding:10px;
+        border:1px solid #e2e8f0;
+        border-radius:6px;
+        margin-bottom:18px;
+        "
+    >
+
+        <option>80% Training / 20% Testing</option>
+
+        <option>70% Training / 30% Testing</option>
+
+    </select>
+
+
+    <label
+        style="
+        display:block;
+        font-size:11px;
+        margin-bottom:7px;
+        "
+    >
+        Number of Previous States
+    </label>
+
+
+    <input
+        type="number"
+        value="5"
+        style="
+        width:100%;
+        padding:10px;
+        border:1px solid #e2e8f0;
+        border-radius:6px;
+        "
+    >
+
+
+    <button
+        class="primary-button"
+        style="
+        border:0;
+        width:100%;
+        margin-top:20px;
+        "
+        onclick="startTraining()"
+    >
+        Start Training
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>Training Progress</h3>
+
+            <p>
+                Current training status
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        style="
+        text-align:center;
+        padding:35px 10px;
+        "
+    >
+
+        <div
+            id="trainingCircle"
+            style="
+            font-size:42px;
+            font-weight:700;
+            "
+        >
+            0%
+        </div>
+
+
+        <p
+            id="trainingStatus"
+            style="
+            font-size:12px;
+            color:#64748b;
+            margin-top:7px;
+            "
+        >
+            Waiting to start
+        </p>
+
+
+        <div
+            style="
+            height:8px;
+            background:#f1f5f9;
+            border-radius:10px;
+            margin-top:25px;
+            overflow:hidden;
+            "
+        >
+
+            <div
+                id="trainingProgress"
+                style="
+                width:0%;
+                height:100%;
+                background:#2563eb;
+                transition:width .4s;
+                "
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        style="
+        border-top:1px solid #e2e8f0;
+        padding-top:15px;
+        "
+    >
+
+        <div class="attack-row">
+
+            <span>Dataset</span>
+
+            <strong>Loaded</strong>
+
+        </div>
+
+
+        <div
+            class="attack-row"
+            style="margin-top:10px;"
+        >
+
+            <span>Preprocessing</span>
+
+            <strong>Ready</strong>
+
+        </div>
+
+
+        <div
+            class="attack-row"
+            style="margin-top:10px;"
+        >
+
+            <span>Model</span>
+
+            <strong>Not trained</strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<script>
+
+function startTraining() {
+
+    const progress =
+        document.getElementById("trainingProgress");
+
+    const circle =
+        document.getElementById("trainingCircle");
+
+    const status =
+        document.getElementById("trainingStatus");
+
+    let value = 0;
+
+    status.textContent =
+        "Training model...";
+
+
+    const interval =
+        setInterval(() => {
+
+            value += 5;
+
+            progress.style.width =
+                value + "%";
+
+            circle.textContent =
+                value + "%";
+
+
+            if (value >= 100) {
+
+                clearInterval(interval);
+
+                status.textContent =
+                    "Training completed";
+
+            }
+
+        }, 150);
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dataset | NetForecast</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">N</div>
+
+            <div>
+                <h2>NetForecast</h2>
+                <span>AI Security Platform</span>
+            </div>
+
+        </div>
+
+        <nav class="navigation">
+
+            <p class="nav-title">MAIN</p>
+
+            <a href="index.html" class="nav-item">
+                <span>◈</span>
+                Dashboard
+            </a>
+
+            <a href="dataset.html" class="nav-item active">
+                <span>▣</span>
+                Dataset
+            </a>
+
+            <a href="training.html" class="nav-item">
+                <span>◉</span>
+                Model Training
+            </a>
+
+            <p class="nav-title">ANALYSIS</p>
+
+            <a href="forecast.html" class="nav-item">
+                <span>◇</span>
+                Forecast
+            </a>
+
+            <a href="history.html" class="nav-item">
+                <span>▤</span>
+                Prediction History
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Dataset</h1>
+
+                <p>
+                    Manage network traffic data used for model training
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="page-intro">
+
+                <div>
+
+                    <h2>Training Dataset</h2>
+
+                    <p>
+                        Upload and inspect your network traffic dataset.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>Upload Dataset</h3>
+
+                        <p>
+                            Supported format: CSV
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    style="
+                    border:2px dashed #cbd5e1;
+                    border-radius:10px;
+                    padding:50px 20px;
+                    text-align:center;
+                    "
+                >
+
+                    <div
+                        style="
+                        font-size:30px;
+                        margin-bottom:15px;
+                        "
+                    >
+                        ↑
+                    </div>
+
+                    <h3>
+                        Upload network traffic data
+                    </h3>
+
+                    <p
+                        style="
+                        color:#64748b;
+                        font-size:12px;
+                        margin:8px 0 20px;
+                        "
+                    >
+                        Select a CSV file containing your traffic features.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="datasetFile"
+                        accept=".csv"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span
+                        style="
+                        color:#64748b;
+                        font-size:11px;
+                        "
+                    >
+                        Total Records
+                    </span>
+
+                    <h3>125,430</h3>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        style="
+                        color:#64748b;
+                        font-size:11px;
+                        "
+                    >
+                        Features
+                    </span>
+
+                    <h3>15</h3>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        style="
+                        color:#64748b;
+                        font-size:11px;
+                        "
+                    >
+                        Classes
+                    </span>
+
+                    <h3>5</h3>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        style="
+                        color:#64748b;
+                        font-size:11px;
+                        "
+                    >
+                        Missing Values
+                    </span>
+
+                    <h3>0</h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h3>Dataset Features</h3>
+
+                        <p>
+                            Selected features for forecasting
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    style="
+                    display:grid;
+                    grid-template-columns:
+                    repeat(3,1fr);
+                    gap:10px;
+                    "
+                >
+
+                    <div class="stat-card">
+                        Network Flow Duration
+                    </div>
+
+                    <div class="stat-card">
+                        Packet Length
+                    </div>
+
+                    <div class="stat-card">
+                        Flow Bytes/s
+                    </div>
+
+                    <div class="stat-card">
+                        Flow Packets/s
+                    </div>
+
+                    <div class="stat-card">
+                        Source Packets
+                    </div>
+
+                    <div class="stat-card">
+                        Destination Packets
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

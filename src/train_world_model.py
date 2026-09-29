@@ -5,64 +5,63 @@ from torch.utils.data import TensorDataset, DataLoader
 
 
 # ============================================================
-# 1. LOAD DATA
+# 1. Load prepared network-state sequences
 # ============================================================
 
-print("Loading training data...")
+X_train = np.load("data/state_sequences_X_train.npy")
+y_train = np.load("data/state_sequences_y_train.npy")
 
-X_train = np.load("data/X_train_scaled.npy")
+X_val = np.load("data/state_sequences_X_val.npy")
+y_val = np.load("data/state_sequences_y_val.npy")
 
-print("Training shape:", X_train.shape)
+print("Training input shape :", X_train.shape)
+print("Training target shape:", y_train.shape)
 
-
-# ============================================================
-# 2. CREATE INPUT AND TARGET
-# ============================================================
-#
-# Input:
-#   flows 0 -> 9
-#
-# Target:
-#   flow 10
-#
-# Example:
-#
-# [flow1, flow2, ..., flow10] -> flow11
-#
-# The model learns to predict the next network state.
-# ============================================================
-
-X = X_train[:, :-1, :]
-Y = X_train[:, -1, :]
-
-print()
-print("Input shape:", X.shape)
-print("Target shape:", Y.shape)
+print("Validation input shape :", X_val.shape)
+print("Validation target shape:", y_val.shape)
 
 
 # ============================================================
-# 3. CONVERT TO PYTORCH TENSORS
+# 2. Convert NumPy arrays to PyTorch tensors
 # ============================================================
 
-X_tensor = torch.tensor(X, dtype=torch.float32)
-Y_tensor = torch.tensor(Y, dtype=torch.float32)
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.float32)
 
-dataset = TensorDataset(X_tensor, Y_tensor)
+X_val_tensor = torch.tensor(X_val, dtype=torch.float32)
+y_val_tensor = torch.tensor(y_val, dtype=torch.float32)
 
-loader = DataLoader(
-    dataset,
-    batch_size=256,
+
+# ============================================================
+# 3. Create DataLoaders
+# ============================================================
+
+BATCH_SIZE = 256
+
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+val_dataset = TensorDataset(X_val_tensor, y_val_tensor)
+
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=BATCH_SIZE,
     shuffle=True
+)
+
+val_loader = DataLoader(
+    val_dataset,
+    batch_size=BATCH_SIZE,
+    shuffle=False
 )
 
 
 # ============================================================
-# 4. DEFINE WORLD MODEL
+# 4. Define Network-State World Model
 # ============================================================
 
-class WorldModel(nn.Module):
+class NetworkStateWorldModel(nn.Module):
 
-    def __init__(self, input_size=32, hidden_size=64):
+    def __init__(self, input_size=15, hidden_size=64, output_size=15):
+
         super().__init__()
 
         self.lstm = nn.LSTM(
@@ -71,39 +70,49 @@ class WorldModel(nn.Module):
             batch_first=True
         )
 
-        self.output = nn.Linear(
+        self.fc = nn.Linear(
             hidden_size,
-            input_size
+            output_size
         )
 
     def forward(self, x):
 
-        lstm_output, _ = self.lstm(x)
+        output, (hidden, cell) = self.lstm(x)
 
-        last_output = lstm_output[:, -1, :]
+        # Use the final time step
+        last_hidden = output[:, -1, :]
 
-        prediction = self.output(last_output)
+        prediction = self.fc(last_hidden)
 
         return prediction
 
 
 # ============================================================
-# 5. CREATE MODEL
+# 5. Select CPU/GPU
 # ============================================================
 
-print()
-print("Creating World Model...")
-
-model = WorldModel(
-    input_size=32,
-    hidden_size=64
+device = torch.device(
+    "cuda" if torch.cuda.is_available() else "cpu"
 )
 
-print(model)
+print("Using device:", device)
 
 
 # ============================================================
-# 6. LOSS AND OPTIMIZER
+# 6. Create model
+# ============================================================
+
+model = NetworkStateWorldModel(
+    input_size=15,
+    hidden_size=64,
+    output_size=15
+)
+
+model = model.to(device)
+
+
+# ============================================================
+# 7. Loss and optimizer
 # ============================================================
 
 criterion = nn.MSELoss()
@@ -115,60 +124,96 @@ optimizer = torch.optim.Adam(
 
 
 # ============================================================
-# 7. TRAIN
+# 8. Training
 # ============================================================
 
-EPOCHS = 5
+EPOCHS = 10
 
-print()
-print("Starting training...")
-print("=" * 60)
+print("\nStarting World Model training...\n")
 
 for epoch in range(EPOCHS):
 
+    # -------------------------
+    # Training
+    # -------------------------
+
     model.train()
 
-    total_loss = 0
+    total_train_loss = 0.0
 
-    for batch_X, batch_Y in loader:
+    for X_batch, y_batch in train_loader:
+
+        X_batch = X_batch.to(device)
+        y_batch = y_batch.to(device)
 
         optimizer.zero_grad()
 
-        prediction = model(batch_X)
+        prediction = model(X_batch)
 
         loss = criterion(
             prediction,
-            batch_Y
+            y_batch
         )
 
         loss.backward()
 
         optimizer.step()
 
-        total_loss += loss.item()
+        total_train_loss += loss.item()
 
-    average_loss = total_loss / len(loader)
+    average_train_loss = (
+        total_train_loss / len(train_loader)
+    )
+
+
+    # -------------------------
+    # Validation
+    # -------------------------
+
+    model.eval()
+
+    total_val_loss = 0.0
+
+    with torch.no_grad():
+
+        for X_batch, y_batch in val_loader:
+
+            X_batch = X_batch.to(device)
+            y_batch = y_batch.to(device)
+
+            prediction = model(X_batch)
+
+            loss = criterion(
+                prediction,
+                y_batch
+            )
+
+            total_val_loss += loss.item()
+
+    average_val_loss = (
+        total_val_loss / len(val_loader)
+    )
+
 
     print(
         f"Epoch {epoch + 1}/{EPOCHS} "
-        f"- Loss: {average_loss:.6f}"
+        f"- Train Loss: {average_train_loss:.6f} "
+        f"- Val Loss: {average_val_loss:.6f}"
     )
 
 
 # ============================================================
-# 8. SAVE MODEL
+# 9. Save model
 # ============================================================
 
 torch.save(
     model.state_dict(),
-    "models/world_model.pth"
+    "models/network_state_world_model.pth"
 )
 
-print()
-print("=" * 60)
-print("WORLD MODEL TRAINING COMPLETE")
-print("=" * 60)
+print("\nTraining complete.")
 
-print()
-print("Model saved to:")
-print("models/world_model.pth")
+print(
+    "Model saved to: "
+    "models/network_state_world_model.pth"
+)

@@ -15,8 +15,8 @@ data/*.csv
 data/*.npy
 
 # Trained models
-models/*.pth
-models/*.pkl
+# models/*.pth
+# models/*.pkl
 
 # Temporary files
 *.log
@@ -28,3 +28,15 @@ models/*.pkl
 # OS
 .DS_Store
 Thumbs.db
+
+# Local project data/research
+data/
+experiments/
+external_test/
+handoff/
+raghini_core/
+reports/
+team_integration/
+
+# Dashboard/build artifacts
+__pycache__/
