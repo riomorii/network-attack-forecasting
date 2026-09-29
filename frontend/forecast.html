@@ -392,64 +392,145 @@
 
 <script>
 
-function runForecast() {
+async function runForecast() {
 
-    document.getElementById("nextState")
-        .textContent = "Suspicious";
+    const API_URL =
+        "https://network-attack-forecasting-o3eq.onrender.com/api/forecast";
 
-    document.getElementById("attackProbability")
-        .textContent = "12.4%";
+    const states = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
 
-    document.getElementById("attackClass")
-        .textContent = "DoS";
+    const button = document.querySelector(
+        "button[onclick='runForecast()']"
+    );
 
-    document.getElementById("confidence")
-        .textContent = "87.6%";
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Generating...";
+    }
 
+    try {
 
-    document.getElementById("forecastResult")
-        .innerHTML = `
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                states: states
+            })
+        });
 
-        <div
-            style="
-            width:55px;
-            height:55px;
-            background:#fef3c7;
-            color:#d97706;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            margin:auto;
-            font-size:22px;
-            "
-        >
-            !
-        </div>
+        const data = await response.json();
 
-        <h2
-            style="
-            margin-top:15px;
-            font-size:20px;
-            "
-        >
-            Suspicious
-        </h2>
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.error || "Forecast request failed"
+            );
+        }
 
-        <p
-            style="
-            color:#64748b;
-            font-size:11px;
-            margin-top:6px;
-            "
-        >
-            Potential abnormal network activity detected.
-        </p>
+        const prediction = data.prediction;
+
+        document.getElementById("nextState").textContent =
+            prediction.class;
+
+        const probabilities =
+            prediction.probabilities;
+
+        const attackProbability = Math.max(
+            probabilities.DOS_DDOS,
+            probabilities.RECONNAISSANCE
+        );
+
+        document.getElementById("attackProbability").textContent =
+            (attackProbability * 100).toFixed(1) + "%";
+
+        document.getElementById("attackClass").textContent =
+            prediction.class;
+
+        document.getElementById("confidence").textContent =
+            (
+                Math.max(...Object.values(probabilities)) * 100
+            ).toFixed(1) + "%";
+
+        document.getElementById("forecastResult").innerHTML = `
+
+            <div
+                style="
+                width:55px;
+                height:55px;
+                background:#eff6ff;
+                color:#2563eb;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                margin:auto;
+                font-size:22px;
+                "
+            >
+                AI
+            </div>
+
+            <h2
+                style="
+                margin-top:15px;
+                font-size:20px;
+                "
+            >
+                ${prediction.class}
+            </h2>
+
+            <p
+                style="
+                color:#64748b;
+                font-size:11px;
+                margin-top:6px;
+                "
+            >
+                Live prediction from the deployed
+                PyTorch forecasting model.
+            </p>
 
         `;
 
-}
+        console.log("Live forecast:", data);
 
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("forecastResult").innerHTML = `
+
+            <h2>Forecast unavailable</h2>
+
+            <p
+                style="
+                color:#64748b;
+                font-size:11px;
+                margin-top:6px;
+                "
+            >
+                ${error.message}
+            </p>
+
+        `;
+
+    } finally {
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "Generate Forecast";
+        }
+
+    }
+
+}
 </script>
 
 
